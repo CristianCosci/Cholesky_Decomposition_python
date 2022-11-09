@@ -1,7 +1,13 @@
 - scrivere readme
-    - descrizione progetto
-    - guida di installazione
-    - risultati ottenuti
-- aggiungere requirements
+    - descrizione progetto e 3 implementazioni
+    - necessarie fotine o gif carine per rendere tutto bello
+    - guida di esecuzione e funzionamento parser
+    - scrivere bene risultati ottenuti
+
+- mi serve una gif o foto esplicativa per ogni algoritmo
+    - cholesky colonna
+    - cholesky diagonale
+    - cholesky riga
+
 - refactoring codice
 - altro?
