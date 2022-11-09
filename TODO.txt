@@ -1,0 +1,7 @@
+- scrivere readme
+    - descrizione progetto
+    - guida di installazione
+    - risultati ottenuti
+- aggiungere requirements
+- refactoring codice
+- altro?
