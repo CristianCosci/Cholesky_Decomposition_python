@@ -1,0 +1,1 @@
+{ "time": 71000, "algorithm": "cholesky", "size": 5000, "seed": 20, "method": "row", "jit": false}

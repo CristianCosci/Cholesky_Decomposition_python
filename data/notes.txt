@@ -1,0 +1,3 @@
+Una matrice 50000x50000 non entra in 32 GB di RAM
+Una matrice 40000x40000 occupa circa 25 GB di RAM
+    - dopo più di 2 ore non è riuscito a generare la matrice A
