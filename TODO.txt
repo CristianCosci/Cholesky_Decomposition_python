@@ -1,6 +1,5 @@
 - scrivere readme
     - descrizione progetto e 3 implementazioni
-    - necessarie fotine o gif carine per rendere tutto bello
     - guida di esecuzione e funzionamento parser
     - scrivere bene risultati ottenuti
 
