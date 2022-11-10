@@ -4,19 +4,17 @@ from tqdm import tqdm
 
 def solve(L: np.ndarray=None, G_U: np.ndarray=None, b: np.array=None) -> np.array:
     '''
-        Risolve il Sistema Lineare dato.
+        Solve the given Linear System.
     
-        In base ai parametri che ottine:
-
-            - se viene dato solo G_U, risolve il sistema partendo dalla matrice
-                ottenuta con l'eliminazione Gaussiana
-            - se viene dato solo L e b, risolve il sistema partendo dalla matrice
-                L ottenuta con la fattorizzazione di Cholesky
-
-            - se i parametri non rispettano i critri precedenti,
-                lancia un'eccezione
+        Based on the parameters you get:
+        - if only G_U is given, it solves the system starting from 
+            the matrix obtained with the Gaussian elimination
+        
+        - if only L and b are given, solve the system starting from 
+            the matrix L obtained with the Cholesky factorization
+        
+        - if the parameters do not respect the previous criteria, throw an exception
     '''
-
     if L is not None and b is not None and G_U is None:
         return __solve_cholesky(L, b)
 
@@ -28,14 +26,12 @@ def solve(L: np.ndarray=None, G_U: np.ndarray=None, b: np.array=None) -> np.arra
 
 def is_correct_solution(A: np.ndarray, x: np.array, b: np.array) -> bool:
     '''
-        Controlla che la soluzione x al sistema dato Ab sia corretta.
-        Questo viene fatto moltiplicando A per x e controllando che il risultato sia
-        uguale a b
+        Check that the solution x to the given system Ab is correct.
+        This is done by multiplying A by x and checking that the result equals b
                
                ??
             Ax == b
     '''
-
     b_bis = A.dot(x)
 
     return np.allclose(b, b_bis, 0.001, 0.001)    # TODO: testare
@@ -74,29 +70,28 @@ def __solve_cholesky(L: np.ndarray, b: np.array) -> np.array:
             and the linear system can be solved in other ways but not with Cholesky. 
                
     '''
-
     U = np.transpose(L)
     n, _ = np.shape(L)
 
-    # soluzioni (forword/backword)
-    y = np.zeros(n, dtype=np.float64)   # forzo tipo float64
+    # solution (forword/backword)
+    y = np.zeros(n, dtype=np.float64)   # force cast to float64
     x = np.zeros(n, dtype=np.float64)
 
-    # TODO: si potrebbe aggiungere un argomento per scegliere quale 
-    #       metodo utilizzare.
+    # TODO: you could add an argument to choose which one
+    # method to use.
 
     # Forword sostitution
     for i in tqdm(range(n), "Solving Cholesky (Forword)"):
-        sumj = 0                    # TODO: si portrebbe riscrivere con la 
-        for j in range(i):          # sommatoria di numpy
+        sumj = 0                    # TODO: you could write with the
+        for j in range(i):          # numpy sum
             sumj += L[i, j] * y[j]
 
         y[i] = (b[i]-sumj)/L[i, i]
 
     # Backword sostitution
     for i in tqdm(range(n-1, -1, -1), "Solving Cholesky (Backword)"):
-        sumj = 0                    # TODO: si portrebbe riscrivere con la 
-        for j in range(i+1, n):     # sommatoria di numpy
+        sumj = 0                    # TODO: you could write with the
+        for j in range(i+1, n):     # numpy sums
             sumj += U[i, j] * x[j]
 
         x[i] = (y[i]-sumj)/U[i, i]
@@ -109,7 +104,7 @@ def __solve_gauss(G_U: np.ndarray) -> np.array:
     n, _ = G_U.shape
     x = np.zeros(n)
 
-    # calcola la soluzione del sistema con forward sostitution
+    # calculates the solution of the system with forward substitution
     x[n-1] = G_U[n-1][n]/G_U[n-1][n-1]
 
     for i in tqdm(range(n-2,-1,-1), "Solving Gauss"):

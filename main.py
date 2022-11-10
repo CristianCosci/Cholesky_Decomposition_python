@@ -2,19 +2,17 @@ import utils as Tester
 import argparse
 import logging
 
-
 def main(args):
-    # impostazioni per logging
+    # settings for logging
     logging.basicConfig(
         format='%(levelname)s: %(message)s', 
         level=logging.INFO if args.verbose else logging.ERROR
         )
 
-    # impostazioni per il test
+    # test settings
     Tester.set_algorithm(args.algorithm)
 
-    # questo funziona solo da python 3.10 in poi
-    # TODO: ci piace ??
+    # this only works from python 3.10 onwards
     match args.test_mode:
         case "find_limit":
             Tester.find_limit(seed=args.seed, method=args.method, jit=args.jit)

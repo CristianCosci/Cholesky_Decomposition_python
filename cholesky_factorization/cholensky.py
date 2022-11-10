@@ -6,15 +6,13 @@ import logging
 
 def compute(A: np.ndarray, method="column", jit=False, nocontrols=False) -> np.ndarray:
     '''
-        Applica la fattorizzazinoe di Cholesky per ottenere la matrice L
-        Per poter funzionare devono essere rispettate le condizioni imposte dalle
-        precedenti funzioni.
+        Apply Cholesky's factoring to obtain the L matrix.
+        In order to have a correct computation, the conditions imposed by the
+        previous functions have to be respected.
 
-        jit:   se True, ottimizza l'esecuzione di questa funzione con numba.
+        jit: if True, optimize the execution of this function with numba.
     '''
-
-    # se specificato i controlli iniziali vengono saltati
-    # per risparmiare tempo
+    # if specified, the initial checks are skipped to save time
     if nocontrols: 
         logging.info("Skipping Requirements")
         is_factorizable = True
@@ -22,7 +20,7 @@ def compute(A: np.ndarray, method="column", jit=False, nocontrols=False) -> np.n
     else:
         is_factorizable = __check_requirements(A)
 
-    # i vincoli non sono soddisfatti, la matrice data non si può fattorizzare
+    # the constraints are not satisfied, the given matrix cannot be factored
     if not is_factorizable:
         return None
 
@@ -34,11 +32,9 @@ def compute(A: np.ndarray, method="column", jit=False, nocontrols=False) -> np.n
 
 def is_correct_solution(A: np.ndarray, L: np.ndarray) -> bool:
 		'''
-            Controlla che la soluzione sia corretta ricalcolando A da L
+            Check that the solution is correct by recalculating A from L
 		'''
-
 		A_bis = np.dot(L, np.transpose(L))
-		
         # print(A_bis)
 
 		return np.allclose(A, A_bis, 0.001, 0.001)
@@ -48,15 +44,11 @@ def __check_requirements(A: np.ndarray) -> bool:
 
     def is_square(matrix: np.ndarray) -> bool:
         '''
-            Questa funzione controlla che la matrice data sa Quadrata:
-
+            This function checks that the given matrix is Square:
                 A = nxn
         '''
-
         logging.info("Checking IS SQUARE")
-
         n, m = matrix.shape
-
         if(m == n):
             return True
         
@@ -64,19 +56,15 @@ def __check_requirements(A: np.ndarray) -> bool:
 
     def is_symmetric(matrix: np.ndarray) -> bool:
         '''
-            Questa funzione controlla che la matrice si Simmetrica:
+            This function checks that the matrix is Symmetric:
 
-                a_ij = a_ji     (deve essere simmetrica sulla diagonale)
+                a_ij = a_ji     (must be symmetrical on the diagonal)
 
                     oppure
                 
-                At = A          (la trasposta è uguale a se stessa)
-
-                
+                At = A          (the transpose is equal to itself)
         '''
-
         logging.info("Checking IS SYMMETRIC")
-
 
         if(np.allclose(matrix.transpose(), matrix)):
             return True
@@ -85,13 +73,11 @@ def __check_requirements(A: np.ndarray) -> bool:
 
     def is_positive_definite(matrix: np.ndarray) -> bool:
         '''
-            Questa funzione controlla che la matrice sia Definita Positiva:
+            This function checks that the matrix is Definite Positive:
 
-                eigenvalues > 0     (tutti gli eigenvalue della matrice devono essere positivi)
+                eigenvalues > 0     (all eigenvalues of the matrix must be positive)
         '''
-
         logging.info("Checking IS POSITIVE DEFINITE")
-
 
         eigenvals = np.linalg.eigvals(matrix)
 
@@ -103,15 +89,15 @@ def __check_requirements(A: np.ndarray) -> bool:
 
     logging.info("Checking Cholesky Requirements")
     
-    # controlla se tutti i requisiti sono soddisfatti
+    # check if all the requirements are met
     return is_square(A) and is_symmetric(A) and is_positive_definite(A)
 
 
 # --- JIT COMPILED FUNCTIONS --- #
 
-# Note: sembra che le funzioni che sono soggette alla JIT non possono stare
-#       all'interno della funzione che effettua la fattorizzazione dato che
-#       ciò fa peggiorare le performance di esecuzione (sul mio pc di 1000 ms).
+# Note: it seems that the functions that are subject to the JIT cannot fit 
+# inside the function that does the factoring since this makes the execution 
+# performance worse (on my pc by 1000 ms).
 #
 # TODO: controllare che effettivamente è vero e il perchè.
 # TODO: nelle seguenti funzioni compilate abbiamo una roba del tipo
@@ -129,12 +115,12 @@ def __row_columns_numba(L: np.array,A: np.array,i: int,j: int) -> bool:
 
 
 ## ~~ by ROW
-# Calcola la fattorizzazione degli elementi lungo la diagonale di A
+# Calculate the factorization of the elements along the diagonal of A
 @jit(nopython=True)
 def __row_diagonal(L:np.ndarray, A:np.ndarray, i:int, j:int) -> bool:
     L[i,j] = np.sqrt(A[i,j]-np.sum(L[:i,j]**2))
 
-# Calcola la fattorizzazione degli elementi che non sono sulla diagonale di A
+# Calculate the factorization of elements that are not on the diagonal of A
 @jit(nopython=True)
 def __row_non_diagonal(L:np.ndarray, A:np.ndarray, i:int, j:int) -> bool:
     L[i,j] = (A[i,j]-np.sum(L[:i,j]*L[:i,i])) / L[i,i]
@@ -144,9 +130,9 @@ def __row_non_diagonal(L:np.ndarray, A:np.ndarray, i:int, j:int) -> bool:
 @jit(nopython=True)
 def __cholesky_formula_diagonal(i, j, A, L):
         if (i == j):
-            return np.sqrt(A[i,j]-np.sum(L[i,:j]**2))   # calcolo i valori della diagonale
+            return np.sqrt(A[i,j]-np.sum(L[i,:j]**2))   # calculate the values of the diagonal
         
-        return (A[i,j]-np.sum(L[i,:j]*L[j,:j])) / L[j,j]    # calcolo i valori delle colonne
+        return (A[i,j]-np.sum(L[i,:j]*L[j,:j])) / L[j,j]    # calculate the column values
 
 
 # --- CHOLESKY METHODS --- #
@@ -154,26 +140,26 @@ def __cholesky_formula_diagonal(i, j, A, L):
 def __compute_by_column(A: np.ndarray, jit=False) -> np.ndarray:
     n, _ = A.shape
 
-    L = np.zeros(n*n, dtype=float).reshape(n, n)    # inizializzo la matricce risultato
+    L = np.zeros(n*n, dtype=float).reshape(n, n)    # initialize the result matrix
 
-    # questo if è bruttino ma forse è necessario. Potrebbe essere messo all'interno
-    # del for ma così andrei ad effettuare tante volte un controllo che deve 
-    # essere eseguito una volta solo (all'inizio).
+    # this if is ugly but maybe it is necessary. 
+    # It could be put inside the for but in this way 
+    # i would go to perform a check many times that must be performed only once (at the beginning).
     if jit:
         for j in tqdm(range(n), "Cholesky - COLUMN (JIT)"):
             for i in range(j, n):
                 if (i == j):
-                    __column_columns_numba(L,A,i,j)   # calcolo i valori della diagonale
+                    __column_columns_numba(L,A,i,j)   # calculate the values of the diagonal
                 else:
-                    __row_columns_numba(L,A,i,j)   # calcolo i valori delle colonne
+                    __row_columns_numba(L,A,i,j)   # calculate the column values
     
     else:
         for j in tqdm(range(n), "Cholesky - COLUMN"):
             for i in range(j, n):
                 if (i == j):
-                    L[i,j] = np.sqrt(A[i,j]-np.sum(L[i,:j]**2))   # calcolo i valori della diagonale
+                    L[i,j] = np.sqrt(A[i,j]-np.sum(L[i,:j]**2))   # calculate the values of the diagonal
                 else:
-                    L[i,j] = (A[i,j]-np.sum(L[i,:j]*L[j,:j])) / L[j,j]   # calcolo i valori delle colonne
+                    L[i,j] = (A[i,j]-np.sum(L[i,:j]*L[j,:j])) / L[j,j]   # calculate the column values
 
     return L
 
@@ -181,43 +167,43 @@ def __compute_by_column(A: np.ndarray, jit=False) -> np.ndarray:
 def __compute_by_row(A: np.ndarray, jit=False) -> np.ndarray:
     n, _ = A.shape
 
-    L = np.zeros(n*n, dtype=float).reshape(n, n)  # inizializzo la matricce risultato
+    L = np.zeros(n*n, dtype=float).reshape(n, n)  # initialize the result matrix
 
     if jit:
         for i in tqdm(range(n), "Cholesky - ROW (JIT)"):
             for j in range(i, n):
                 if (i == j):
-                    __row_diagonal(L,A,i,j)   # calcolo i valori della diagonale
+                    __row_diagonal(L,A,i,j)   # calculate the values of the diagonal
                 else:
-                    __row_non_diagonal(L,A,i,j)  # calcolo i valori delle colonne
+                    __row_non_diagonal(L,A,i,j)  # calculate the column values
 
     else:
         for i in tqdm(range(n), "Cholesky - ROW"):
             for j in range(i, n):
                 if (i == j):
-                    L[i,j] = np.sqrt(A[i,j]-np.sum(L[:i,j]**2))   # calcolo i valori della diagonale
+                    L[i,j] = np.sqrt(A[i,j]-np.sum(L[:i,j]**2))   # calculate the values of the diagonal
                 else:
-                    L[i,j] = (A[i,j]-np.sum(L[:i,j]*L[:i,i])) / L[i,i]   # calcolo i valori delle colonne
+                    L[i,j] = (A[i,j]-np.sum(L[:i,j]*L[:i,i])) / L[i,i]   # calculate the column values
 
-    # N.B. la matrice va trasposta !!
+    # N.B. the matrix must be transposed !!
     return L.transpose()
 
 
 def __compute_by_diagonal(A: np.ndarray, jit=False) -> np.ndarray:
-    # TODO: sta cosa funziona ma potrebbe essere migliorata !
+    # TODO: is what works but could be improved (From an aesthetic point of view)!
 
     def cholesky_formula(i, j, A, L):
         if (i == j):
-            return np.sqrt(A[i,j]-np.sum(L[i,:j]**2))   # calcolo i valori della diagonale
+            return np.sqrt(A[i,j]-np.sum(L[i,:j]**2))   # calculate the values of the diagonal
         
-        return (A[i,j]-np.sum(L[i,:j]*L[j,:j])) / L[j,j]    # calcolo i valori delle colonne
+        return (A[i,j]-np.sum(L[i,:j]*L[j,:j])) / L[j,j]    # calculate the column values
 
 
     n, _ = A.shape
 
-    L = np.zeros(n*n, dtype=float).reshape(n, n)    # inizializzo la matricce risultato
+    L = np.zeros(n*n, dtype=float).reshape(n, n)    # initialize the result matrix
 
-    external = 0 #variabile per contare quanti cicli esterni devo fare
+    external = 0 #variable to count how many external loops I have to do
     internal = 2 * n - 1 - 1
     aux = 0
     if jit:

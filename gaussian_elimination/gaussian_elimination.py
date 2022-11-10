@@ -7,19 +7,18 @@ def compute(Ab: np.ndarray) -> np.ndarray:
             Gauss elmination algorithm
 
             inputs:
-                Ab ->   Augmented Matrix, matrice dei coefficienti con aggiunta
-                        la colonna dei termini noti.
+                Ab ->   Augmented Matrix, matrix of coefficients with the column 
+                        of known terms added.
 
             return:
-                La matrice Triangolare Superiore ottenuta applicando l'eliminazione
-                Gaussiana alla matrice data Ab.
+                The Upper Triangular matrix obtained by applying the Gaussian
+                elimination to the given matrix Ab.
             
-            N.B.: la matrice che ritorna non è la stessa cosa di Cholesky, quindi
-                    l'operazione UU' = A non vale !!
+            N.B.: the returning matrix is not the same as Cholesky, 
+                so the operation UU '= A is not valid !!
         '''
-
-        # effettua una copia (vera) dell'array
-        # e lo casta a float
+        # make a (true) copy of the array
+        # and casts it to float
         matrix = Ab.copy()
      
         if matrix[0,0] == 0.0:
@@ -38,27 +37,26 @@ def compute(Ab: np.ndarray) -> np.ndarray:
 
 def is_correct_solution(A: np.ndarray, G_U: np.ndarray, b: np.array) -> bool:
     '''
-        Controlla che il risultato dell'eliminazione gaussiana sia corretto.
+        Check that the result of the Gaussian elimination is correct.
 
-        Per farlo viene risolto il sistema e verificato che la soluzione ottenuta
-        sia effettivamente una soluzione corretta al sistema.
+        To do this, the system is solved and verified that 
+        the solution obtained is indeed a correct solution to the system.
 
                ??
             Ax == b
 
         input:
-            A -> Matrice dei Coefficienti
-          G_U -> Matrice ottenuta dall'applicazione dell'eleiminazione gaussiana
-            b -> Termini noti del Sistema
+            A -> Coefficients Matrix
+          G_U -> Matrix obtained by applying the Gaussian elimination
+            b -> Known System Terms
 
         return:
-            True, se la soluzione è corretta. False altrimenti
+            True, if the solution is correct. False otherwise
     '''
-
     n, _ = G_U.shape
     x = np.zeros(n)
 
-    # calcola la soluzione del sistema con forward sostitution
+    # calculates the solution of the system with forward substitution
     x[n-1] = G_U[n-1][n]/G_U[n-1][n-1]
 
     for i in tqdm(range(n-2,-1,-1), "Checking Gauss Solution"):
@@ -75,8 +73,8 @@ def is_correct_solution(A: np.ndarray, G_U: np.ndarray, b: np.array) -> bool:
 
 
 if __name__ == "__main__":
-    # tutto questo server per importare (in modo violento)
-    # il modulo tester
+    # all this server to import (violently)
+    # the tester module
     import os
     import sys
     import inspect
