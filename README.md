@@ -29,7 +29,7 @@ where $L$ is a real lower triangular matrix with positive diagonal entries.
 ## **Positive semidefinite matrices**
 If a Hermitian matrix $A$ is only positive semidefinite, instead of positive definite, then it still has a decomposition of the form $A = LL^*$ where the diagonal entries of L are allowed to be zero. The decomposition need not be unique, for example:
 
-<img src="imgs/CodeCogsWqn1.png" alt="formula" width="70%" />
+<img src="imgs/CodeCogsEqn1.png" alt="formula" width="70%" />
 
 $
 {\displaystyle {\begin{bmatrix}0&0\\0&1\end{bmatrix}}=\mathbf {L} \mathbf {L} ^{*},\quad \quad \mathbf {L} ={\begin{bmatrix}0&0\\\cos \theta &\sin \theta \end{bmatrix}}.}
