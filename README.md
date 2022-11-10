@@ -7,9 +7,10 @@
     - [The Cholesky–Banachiewicz and Cholesky–Crout algorithms](#the-cholesky–banachiewicz-and-cholesky–crout-algorithms)
     - [The Computation by Diagonal Algorithm](#the-computation-by-diagonal-algorithm)
 3. [Implementation Info and comparison with other methods](#implementation-info-and-comparison-with-other-methods)
-3. [Installation and env preparation](#installation-and-virtual-environment-preparation)
-4. [Execution Guide](#execution-guide)
-5. [Results](#results)
+4. [Results](#results)
+5. [Installation and env preparation](#installation-and-virtual-environment-preparation)
+6. [Execution Guide](#execution-guide)
+
 
 <hr>
 
@@ -135,6 +136,62 @@ For any doubt, question or issue you can open an issue or post it on [Discussion
 
 <hr>
 
+## **Results**
+In this section there are the result obtained with random 5000 x 5000 matrix in order to compare **Gauss and Cholesky** methods. <br>
+For each type of test we repeated it 3 times to obtain an avg value. <br>
+The execution times are expressed in **milliseconds (ms)**.
+
+### **Cholesky Factorization (no JIT)**
+
+| Algorithm | Method  | Matrix Size | JIT | Execution Time #1 | Execution Time #2 | Execution Time #3 | AVG Execution Time | 
+| --------- | ------- | ----------- | --- | ----------------- | ----------------- | ----------------- | ------------------ |
+| Cholesky  | COLUMN  | 5000        | ❌  |   46000           | 45000             | 45000             | 45333.33           |
+| Cholesky  | ROW     | 5000        | ❌  |   73000           | 71000             | 70000             | 71333.33           |
+| Cholesky  | DIAGONAL| 5000        | ❌  |   48000           | 49000             | 48000             | 48333.33           |
+
+
+
+### **Cholesky Factorization (JIT)**
+
+| Algorithm | Method  | Matrix Size | JIT | Execution Time #1 | Execution Time #2 | Execution Time #3 | AVG Execution Time | 
+| --------- | ------- | ----------- | --- | ----------------- | ----------------- | ----------------- | ------------------ |
+| Cholesky  | COLUMN  | 5000        | ✅  |   23000           | 23000             | 23000             | 23000.00           |
+| Cholesky  | ROW     | 5000        | ✅  |   43000           | 43000             | 42000             | 42666.66           |
+| Cholesky  | DIAGONAL| 5000        | ✅  |   25000           | 26000             | 26000             | 25666.66           |
+
+
+
+### **Gussian Elimination**
+
+| Algorithm | Method  | Matrix Size | JIT | Execution Time #1 | Execution Time #2 | Execution Time #3 | AVG Execution Time | 
+| --------- | ------- | ----------- | --- | ----------------- | ----------------- | ----------------- | ------------------ |
+| Gauss     |         | 5000        | ❌  |   51000           | 50000             | 50000             | 50333.33           |
+
+
+
+### **Cholesky (no JIT) vs Cholesky (JIT)**
+
+| Algorithm | Method  | Matrix Size | AVG Execution Time (no JIT) | AVG Execution Time (JIT) | DIFF               |
+| --------- | ------- | ----------- | --------------------------- | ------------------------ | ------------------ |
+| Cholesky  | COLUMN  | 5000        | 45333.33                    | 23000.00                 | -22333.33 (49.26%) |
+| Cholesky  | ROW     | 5000        | 71333.33                    | 42666.66                 | -28666.67 (40.18%) |
+| Cholesky  | DIAGONAL| 5000        | 48333.33                    | 25666.66                 | -22666.67 (46.89%) |
+
+
+
+### **Cholesky Factorization VS Gaussian Elimination**
+
+| Cholesky Factorization Method | JIT | AVG Execution Time | Gaussian Elimination AVG Execution Time | DIFF               |
+| ----------------------------- | --- | ------------------ | --------------------------------------- | ------------------ |
+| COLUMN                        | ❌  | 45333.33           | 50333.33                                | -5000.00  (9.93%)  | 
+| ROW                           | ❌  | 71333.33           | 50333.33                                | +21000.00 (41.72%) |
+| DIAGONAL                      | ❌  | 48333.33           | 50333.33                                | -2000.00  (3.97%)  | 
+| COLUMN                        | ✅  | 23000.00           | 50333.33                                | -27333.33 (54.30%) |
+| ROW                           | ✅  | 42666.66           | 50333.33                                | -7666.66  (15.23%) | 
+| DIAGONAL                      | ✅  | 25666.66           | 50333.33                                | -24666.67 (49.00%) |
+
+<hr>
+
 ## **Installation and virtual environment preparation**
 1. Create a dir and download the project inside.
 2. Create a virtual env in that directory
@@ -161,58 +218,6 @@ todo
 
 <hr>
 
-## Results
-
-The execution times are expressed in **milliseconds (ms)**.
-
-### Cholesky Factorization (no JIT)
-
-| Algorithm | Method  | Matrix Size | JIT | Execution Time #1 | Execution Time #2 | Execution Time #3 | AVG Execution Time | 
-| --------- | ------- | ----------- | --- | ----------------- | ----------------- | ----------------- | ------------------ |
-| Cholesky  | COLUMN  | 5000        | ❌  |   46000           | 45000             | 45000             | 45333.33           |
-| Cholesky  | ROW     | 5000        | ❌  |   73000           | 71000             | 70000             | 71333.33           |
-| Cholesky  | DIAGONAL| 5000        | ❌  |   48000           | 49000             | 48000             | 48333.33           |
-
-
-
-### Cholesky Factorization (JIT)
-
-| Algorithm | Method  | Matrix Size | JIT | Execution Time #1 | Execution Time #2 | Execution Time #3 | AVG Execution Time | 
-| --------- | ------- | ----------- | --- | ----------------- | ----------------- | ----------------- | ------------------ |
-| Cholesky  | COLUMN  | 5000        | ✅  |   23000           | 23000             | 23000             | 23000.00           |
-| Cholesky  | ROW     | 5000        | ✅  |   43000           | 43000             | 42000             | 42666.66           |
-| Cholesky  | DIAGONAL| 5000        | ✅  |   25000           | 26000             | 26000             | 25666.66           |
-
-
-
-### Gussian Elimination
-
-| Algorithm | Method  | Matrix Size | JIT | Execution Time #1 | Execution Time #2 | Execution Time #3 | AVG Execution Time | 
-| --------- | ------- | ----------- | --- | ----------------- | ----------------- | ----------------- | ------------------ |
-| Gauss     |         | 5000        | ❌  |   51000           | 50000             | 50000             | 50333.33           |
-
-
-
-### Cholesky (no JIT) vs Cholesky (JIT)
-
-| Algorithm | Method  | Matrix Size | AVG Execution Time (no JIT) | AVG Execution Time (JIT) | DIFF               |
-| --------- | ------- | ----------- | --------------------------- | ------------------------ | ------------------ |
-| Cholesky  | COLUMN  | 5000        | 45333.33                    | 23000.00                 | -22333.33 (49.26%) |
-| Cholesky  | ROW     | 5000        | 71333.33                    | 42666.66                 | -28666.67 (40.18%) |
-| Cholesky  | DIAGONAL| 5000        | 48333.33                    | 25666.66                 | -22666.67 (46.89%) |
-
-
-
-### Cholesky Factorization VS Gaussian Elimination
-
-| Cholesky Factorization Method | JIT | AVG Execution Time | Gaussian Elimination AVG Execution Time | DIFF               |
-| ----------------------------- | --- | ------------------ | --------------------------------------- | ------------------ |
-| COLUMN                        | ❌  | 45333.33           | 50333.33                                | -5000.00  (9.93%)  | 
-| ROW                           | ❌  | 71333.33           | 50333.33                                | +21000.00 (41.72%) |
-| DIAGONAL                      | ❌  | 48333.33           | 50333.33                                | -2000.00  (3.97%)  | 
-| COLUMN                        | ✅  | 23000.00           | 50333.33                                | -27333.33 (54.30%) |
-| ROW                           | ✅  | 42666.66           | 50333.33                                | -7666.66  (15.23%) | 
-| DIAGONAL                      | ✅  | 25666.66           | 50333.33                                | -24666.67 (49.00%) |
 
 
 <hr>
