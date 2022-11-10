@@ -6,5 +6,7 @@
         - cholesky diagonale
         - cholesky riga
 
+- scrivere help in inglese sul main
+- quale è l'esecuzione standard del codice?
+
 - rileggere readme
-- refactoring codice
