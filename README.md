@@ -6,6 +6,7 @@
 2. [The Cholesky algorithm](#the-cholesky-algorithm)
     - [The Cholesky–Banachiewicz and Cholesky–Crout algorithms](#the-cholesky–banachiewicz-and-cholesky–crout-algorithms)
     - [The Computation by Diagonal Algorithm](#the-computation-by-diagonal-algorithm)
+3. [Implementation Info and comparison with other methods](#implementation-info-and-comparison-with-other-methods)
 3. [Installation and env preparation](#installation-and-virtual-environment-preparation)
 4. [Execution Guide](#execution-guide)
 5. [Results](#results)
@@ -103,9 +104,34 @@ So we can compute the (i, j) entry if we know the entries to the left and above.
     It starts from the upper left corner of the matrix L and proceeds to calculate the matrix column by column. <br>
     fotina carina 
 
-## **The Computation by Diagonal Algorithm**
+## **The Diagonal by Diagonal Computation Algorithm**
+**We found that there exist another, funny and much difficult to implement, method to compute the Cholesky Factorization**. This was an idea of our Numerical Approximation course professor and consist in computing the factorization by proceeding in diagonal (antidiagonal to be precise). <br>
+This method starts from the upper left corner of the matrix L and proceeds to calculate the matrix antidiagonal by antidiagonal (see the img below for more details).
 
+fotina carina
 
+<hr>
+
+## **Implementation Info and comparison with other methods**
+In order to demonstrate the speed of Cholesky Factorization over Gaussian Elimination we make a lot of test using a 5000 x 5000 matrix and log the execution time of the 2 method.
+
+- **Cholesky Factorization time complexity**: $O(\dfrac{1}{3} n^3 + \dfrac{2}{3}n)$
+- **Gaussian Elimination time complexity**: $O(n^3)$
+
+The comparis was made using normal compilation and also compilation with ***JIT*** provided by ***Numba*** python package (see [Numba](https://numba.pydata.org/numba-doc/latest/user/jit.html)).
+
+### **Directory content explaination**
+The project is composed of 4 directory:
+- `cholesky_factorization`: contains the `cholesky.py` file that contains the cholesky implementations with all 3 methods described before.
+- `utils`: contains some python script used for 
+    - generate random matrix which are solvable factorizable using cholesky
+    - log execution time
+    - test and validation of obtained results
+- `gaussian_elimination`: contains `gaussian_elimination.py` script that implement gaussian elimination method.
+- `linear_system_solver`: contains `linsys_solver.py` script that implement the resolution of linear system.
+
+You can take the single script and refactor the code to use for any correlated implementation as you want. <br>
+For any doubt, question or issue you can open an issue or post it on [Discussion](https://github.com/CristianCosci/Cholesky_Decomposition_python/discussions) tab.
 
 <hr>
 
@@ -137,7 +163,7 @@ todo
 
 ## Results
 
-The execution times are expressed in **seconds (s)**.
+The execution times are expressed in **milliseconds (ms)**.
 
 ### Cholesky Factorization (no JIT)
 

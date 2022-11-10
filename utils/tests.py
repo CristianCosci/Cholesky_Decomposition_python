@@ -3,9 +3,9 @@ import json
 from typing import Any, Callable, Dict, Tuple
 from .execution_time import get_execution_time
 from .data_generator import generate_data
-import cholesky as Cholesky_factorization
-import gauss as Gaussian_elimination
-import linsys as Linear_sistem
+import cholesky_factorization as Cholesky_factorization
+import gaussian_elimination as Gaussian_elimination
+import linear_system_solver as Linear_sistem
 import numpy as np
 
 

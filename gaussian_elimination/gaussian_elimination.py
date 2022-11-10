@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parentdir = os.path.dirname(currentdir)
     sys.path.insert(0, parentdir) 
 
-    import tester as Tester
+    import utils as Tester
 
     A, b = Tester.generate_data(size=10, seed=20)
     Ab = np.c_[A, b]

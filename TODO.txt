@@ -1,5 +1,4 @@
 - scrivere readme
-    - descrizione progetto e 3 implementazioni
     - guida di esecuzione e funzionamento parser
     - scrivere bene risultati ottenuti
 
@@ -8,5 +7,6 @@
     - cholesky diagonale
     - cholesky riga
 
+- rileggere readme
 - refactoring codice
 - altro?
