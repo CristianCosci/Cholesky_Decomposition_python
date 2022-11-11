@@ -65,56 +65,92 @@ $A(1) := A$.
 
 At step i, the matrix $A^{(i)}$ has the following form:
 
-$\mathbf {A} ^{(i)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\0 &a_{i,i}&\mathbf {b}_{i}^{*}\\0&\mathbf {b} _{i}&\mathbf {B} ^{(i)}\end{pmatrix}}, $
+$$
+\mathbf {A} ^{(i)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\ 
+0 &a_{i,i}&\mathbf {b}_{i}^{*}\\ 
+0&\mathbf {b} _{i}&\mathbf {B} ^{(i)}
+\end{pmatrix}}, 
+$$
 
 where $I_{i−1}$ denotes the identity matrix of dimension i − 1.
 
 If we now define the matrix $L_i$ by
 
-$\mathbf {L}_{i}:={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\0&{\sqrt {a_{i,i}}}&0\\0&{\frac {1}{\sqrt {a_{i,i}}}}\mathbf {b} _{i}&\mathbf {I} _{n-i}\end{pmatrix}}, $
+$$
+\mathbf {L}_{i}:={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\
+0&{\sqrt {a_{i,i}}}&0\\
+0&{\frac {1}{\sqrt {a_{i,i}}}}\mathbf {b} _{i}&\mathbf {I} _{n-i}\end{pmatrix}}, 
+$$
 
 
 (note that $a_{i,i}$ > 0 since $A^{(i)}$ is positive definite), then we can write $A^{(i)}$  as
 
-$ \mathbf {A} ^{(i)}=\mathbf {L} _{i}\mathbf {A} ^{(i+1)}\mathbf {L} _{i}^{*} $
+$$
+\mathbf {A} ^{(i)}=\mathbf {L} _{i}\mathbf {A} ^{(i+1)}\mathbf {L} _{i}^{*} 
+$$
 
 
 where
 
-$ \mathbf {A} ^{(i+1)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\0&1&0\\0&0&\mathbf {B} ^{(i)}-{\frac {1}{a_{i,i}}}\mathbf {b} _{i}\mathbf {b} _{i}^{*}\end{pmatrix}}. $
+$$ \mathbf {A} ^{(i+1)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\
+0&1&0\\
+0&0&\mathbf {B} ^{(i)}-{\frac {1}{a_{i,i}}}\mathbf {b} _{i}\mathbf {b} _{i}^{*}\end{pmatrix}}. 
+$$
 
 
 Note that $b_i$ $b^*_i$ is an outer product, therefore this algorithm is called the outer-product version in (Golub & Van Loan).
 
 We repeat this for i from 1 to n. After n steps, we get $A^{(n+1)}$  = $I$. Hence, the lower triangular matrix $L$ we are looking for is calculated as
 
-$ \mathbf {L} :=\mathbf {L} _{1}\mathbf {L} _{2}\dots \mathbf {L} _{n}. $
+$$ \mathbf {L} :=\mathbf {L} _{1}\mathbf {L} _{2}\dots \mathbf {L} _{n}. $$
 
 <br>
 
 ## **The Cholesky–Banachiewicz and Cholesky–Crout algorithms**
 If we write out the equation
 
-$ {\displaystyle {\begin{aligned}\mathbf {A} =\mathbf {LL} ^{T}&={\begin{pmatrix}L_{11}&0&0\\L_{21}&L_{22}&0\\L_{31}&L_{32}&L_{33}\\\end{pmatrix}}{\begin{pmatrix}L_{11}&L_{21}&L_{31}\\0&L_{22}&L_{32}\\0&0&L_{33}\end{pmatrix}}\\[8pt]&={\begin{pmatrix}L_{11}^{2}&&({\text{symmetric}})\\L_{21}L_{11}&L_{21}^{2}+L_{22}^{2}&\\L_{31}L_{11}&L_{31}L_{21}+L_{32}L_{22}&L_{31}^{2}+L_{32}^{2}+L_{33}^{2}\end{pmatrix}},\end{aligned}}} $
+$$ 
+{\displaystyle {\begin{aligned}\mathbf {A} =\mathbf {LL} ^{T}&={\begin{pmatrix}L_{11}&0&0\\
+L_{21}&L_{22}&0\\
+L_{31}&L_{32}&L_{33}\\
+\end{pmatrix}}{\begin{pmatrix}L_{11}&L_{21}&L_{31}\\
+0&L_{22}&L_{32}\\
+0&0&L_{33}\end{pmatrix}}\\
+  &={\begin{pmatrix}L_{11}^{2}&&({\text{symmetric}})\\
+L_{21}L_{11}&L_{21}^{2}+L_{22}^{2}&\\
+L_{31}L_{11}&L_{31}L_{21}+L_{32}L_{22}&L_{31}^{2}+L_{32}^{2}+L_{33}^{2}\end{pmatrix}},\end{aligned}}} 
+$$
 
 we obtain the following:
 
-$ {\displaystyle {\begin{aligned}\mathbf {L} ={\begin{pmatrix}{\sqrt {A_{11}}}&0&0\\A_{21}/L_{11}&{\sqrt {A_{22}-L_{21}^{2}}}&0\\A_{31}/L_{11}&\left(A_{32}-L_{31}L_{21}\right)/L_{22}&{\sqrt {A_{33}-L_{31}^{2}-L_{32}^{2}}}\end{pmatrix}}\end{aligned}}} $
+$$ 
+{\displaystyle {\begin{aligned}\mathbf {L} ={\begin{pmatrix}{\sqrt {A_{11}}}&0&0\\
+A_{21}/L_{11}&{\sqrt {A_{22}-L_{21}^{2}}}&0\\
+A_{31}/L_{11}&\left(A_{32}-L_{31}L_{21}\right)/L_{22}&{\sqrt {A_{33}-L_{31}^{2}-L_{32}^{2}}}\end{pmatrix}}\end{aligned}}} 
+$$
 
 and therefore the following formulas for the entries of L:
 
-$ {\displaystyle L_{j,j}=(\pm ){\sqrt {A_{j,j}-\sum^{j-1}_{k=1}L^{2}_{j,k}}},} $
+$$ 
+{\displaystyle L_{j,j}=(\pm ){\sqrt {A_{j,j}-\sum_{k=1}^{j-1}L^{2}_{j,k}}},} 
+$$
 
-$ {\displaystyle L_{i,j}={\frac {1}{L_{j,j}}}\left(A_{i,j}-\sum_{k=1}^{j-1}L_{i,k}L_{j,k}\right)\quad {\text{for }}i>j.} $
+$$ 
+{\displaystyle L_{i,j}={\frac {1}{L_{j,j}}}\left(A_{i,j}-\sum_{k=1}^{j-1}L_{i,k}L_{j,k}\right)\quad {\text{for }}i>j.} 
+$$
 
 
 For complex and real matrices, inconsequential arbitrary sign changes of diagonal and associated off-diagonal elements are allowed. The expression under the **square root** is always positive if A is real and positive-definite.
 
 For complex Hermitian matrix, the following formula applies:
 
-$ {\displaystyle L_{j,j}={\sqrt {A_{j,j}-\sum_{k=1}^{j-1}L_{j,k}L_{j,k}^{*}}},} $
+$$ 
+{\displaystyle L_{j,j}={\sqrt {A_{j,j}-\sum_{k=1}^{j-1}L_{j,k}L_{j,k}^{*}}},} 
+$$
 
-$ {\displaystyle L_{i,j}={\frac {1}{L_{j,j}}}\left(A_{i,j}-\sum_{k=1}^{j-1}L_{i,k}L_{j,k}^{*}\right)\quad {\text{for }}i>j.} $
+$$ 
+{\displaystyle L_{i,j}={\frac {1}{L_{j,j}}}\left(A_{i,j}-\sum_{k=1}^{j-1}L_{i,k}L_{j,k}^{*}\right)\quad {\text{for }}i>j.} 
+$$
 
 
 So we can compute the (i, j) entry if we know the entries to the left and above. The computation is usually arranged in either of the following orders: 
