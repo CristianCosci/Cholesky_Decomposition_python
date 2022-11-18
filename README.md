@@ -150,16 +150,17 @@ So we can compute the (i, j) entry if we know the entries to the left and above.
 
 - ### **Computation proceeding row by row: Cholesky–Banachiewicz algorithm** <br>
     It starts from the upper left corner of the matrix L and proceeds to calculate the matrix row by row. <br>
-    fotina carina
+    <img src="imgs/chol_riga.jpg" alt="cholesky_riga" width="40%" />
+
 - ### **Computation proceeding column by column: Cholesky–Crout algorithm** <br>
     It starts from the upper left corner of the matrix L and proceeds to calculate the matrix column by column. <br>
-    fotina carina 
+    <img src="imgs/chol_colonna.jpg" alt="cholesky_riga" width="40%" />
 
 ## **The Diagonal by Diagonal Computation Algorithm**
 **We found that there exist another, funny and much difficult to implement, method to compute the Cholesky Factorization**. This was an idea of our Numerical Approximation course professor and consist in computing the factorization by proceeding in diagonal (antidiagonal to be precise). <br>
 This method starts from the upper left corner of the matrix L and proceeds to calculate the matrix antidiagonal by antidiagonal (see the img below for more details).
 
-fotina carina
+<img src="imgs/chol_diagonale.jpg" alt="cholesky_riga" width="40%" />
 
 <hr>
 
