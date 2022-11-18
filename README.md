@@ -318,5 +318,5 @@ python main.py -tm benchmark --jit -alg cholesky -m row --seed 20 --size 10000
 
 <hr>
 
-#### **References**
+### **References**
 - <https://en.wikipedia.org/wiki/Cholesky_decomposition>
