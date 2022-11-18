@@ -1,15 +1,17 @@
 # **Cholesky Factorization**
 
 ## **Index**
-1. [Introduction](#introduction)
-    - [Positive semidefinite matrices](#positive-semidefinite-matrices)
-2. [The Cholesky algorithm](#the-cholesky-algorithm)
-    - [The Cholesky–Banachiewicz and Cholesky–Crout algorithms](#the-cholesky–banachiewicz-and-cholesky–crout-algorithms)
-    - [The Computation by Diagonal Algorithm](#the-computation-by-diagonal-algorithm)
-3. [Implementation Info and comparison with other methods](#implementation-info-and-comparison-with-other-methods)
-4. [Results](#results)
-5. [Installation and env preparation](#installation-and-virtual-environment-preparation)
-6. [Execution Guide](#execution-guide)
+
+1. [**Introduction**](#introduction)
+   - [**Positive semidefinite matrices**](#positive-semidefinite-matrices)
+2. [**The Cholesky algorithm**](#the-cholesky-algorithm)
+   - [**The Cholesky–Banachiewicz and Cholesky–Crout algorithms**](#the-choleskybanachiewicz-and-choleskycrout-algorithms)
+   - [**The Diagonal by Diagonal Computation Algorithm**](#the-diagonal-by-diagonal-computation-algorithm)
+3. [**Implementation Info and comparison with other methods**](#implementation-info-and-comparison-with-other-methods)
+4. [**Results**](#results)
+5. [**Installation and virtual environment preparation**](#installation-and-virtual-environment-preparation)
+6. [**Execution Guide**](#execution-guide)
+7. [**References**](#references)
 
 
 <hr>
@@ -33,7 +35,14 @@ where $L$ is a real lower triangular matrix with positive diagonal entries.
 ## **Positive semidefinite matrices**
 If a Hermitian matrix $A$ is only positive semidefinite, instead of positive definite, then it still has a decomposition of the form $A = LL^*$ where the diagonal entries of L are allowed to be zero. The decomposition need not be unique, for example:
 
-<img src="imgs/CodeCogsEqn1.png" alt="formula" width="40%" />
+
+$$
+{\displaystyle {
+\begin{bmatrix}
+0 & 0\\
+0 & 1
+\end{bmatrix}}=\mathbf {L} \mathbf {L} ^{*},\quad \quad \mathbf {L} ={\begin{bmatrix}0&0\\\cos \theta &\sin \theta \end{bmatrix}}.}
+$$
 
 However, if the rank of $A$ is $r$, then there is a unique lower triangular $L$ with exactly $r$ positive diagonal elements and $n−r$ columns containing all zeroes.
 
@@ -49,52 +58,93 @@ $A(1) := A$.
 
 At step i, the matrix $A^{(i)}$ has the following form:
 
-<img src="imgs/CodeCogsEqn2.png" alt="formula" width="40%" />
+$$
+\mathbf {A} ^{(i)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\ 
+0 &a_{i,i}&\mathbf {b}_{i}^{*}\\ 
+0&\mathbf {b} _{i}&\mathbf {B} ^{(i)}
+\end{pmatrix}}, 
+$$
 
 where $I_{i−1}$ denotes the identity matrix of dimension i − 1.
 
 If we now define the matrix $L_i$ by
 
-<img src="imgs/CodeCogsEqn3.png" alt="formula" width="40%" />
+$$
+\mathbf {L}_{i}:={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\
+0&{\sqrt {a_{i,i}}}&0\\
+0&{\frac {1}{\sqrt {a_{i,i}}}}\mathbf {b} _{i}&\mathbf {I} _{n-i}\end{pmatrix}}, 
+$$
+
 
 (note that $a_{i,i}$ > 0 since $A^{(i)}$ is positive definite), then we can write $A^{(i)}$  as
 
-<img src="imgs/CodeCogsEqn4.png" alt="formula" width="20%" />
+$$
+\mathbf {A} ^{(i)}=\mathbf {L} _{i}\mathbf {A} ^{(i+1)}\mathbf {L} _{i}^{*} 
+$$
+
 
 where
 
-<img src="imgs/CodeCogsEqn5.png" alt="formula" width="50%" />
+$$ \mathbf {A} ^{(i+1)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\
+0&1&0\\
+0&0&\mathbf {B} ^{(i)}-{\frac {1}{a_{i,i}}}\mathbf {b} _{i}\mathbf {b} _{i}^{*}\end{pmatrix}}. 
+$$
+
 
 Note that $b_i$ $b^*_i$ is an outer product, therefore this algorithm is called the outer-product version in (Golub & Van Loan).
 
 We repeat this for i from 1 to n. After n steps, we get $A^{(n+1)}$  = $I$. Hence, the lower triangular matrix $L$ we are looking for is calculated as
 
-<img src="imgs/CodeCogsEqn6.png" alt="formula" width="20%" />
+$$ \mathbf {L} :=\mathbf {L} _{1}\mathbf {L} _{2}\dots \mathbf {L} _{n}. $$
 
 <br>
 
 ## **The Cholesky–Banachiewicz and Cholesky–Crout algorithms**
 If we write out the equation
 
-<img src="imgs/CodeCogsEqn7.png" alt="form<hrula" width="60%" />
+$$ 
+{\displaystyle {\begin{aligned}\mathbf {A} =\mathbf {LL} ^{T}&={\begin{pmatrix}L_{11}&0&0\\
+L_{21}&L_{22}&0\\
+L_{31}&L_{32}&L_{33}\\
+\end{pmatrix}}{\begin{pmatrix}L_{11}&L_{21}&L_{31}\\
+0&L_{22}&L_{32}\\
+0&0&L_{33}\end{pmatrix}}\\
+  &={\begin{pmatrix}L_{11}^{2}&&({\text{symmetric}})\\
+L_{21}L_{11}&L_{21}^{2}+L_{22}^{2}&\\
+L_{31}L_{11}&L_{31}L_{21}+L_{32}L_{22}&L_{31}^{2}+L_{32}^{2}+L_{33}^{2}\end{pmatrix}},\end{aligned}}} 
+$$
 
 we obtain the following:
 
-<img src="imgs/CodeCogsEqn8.png" alt="formula" width="70%" />
+$$ 
+{\displaystyle {\begin{aligned}\mathbf {L} ={\begin{pmatrix}{\sqrt {A_{11}}}&0&0\\
+A_{21}/L_{11}&{\sqrt {A_{22}-L_{21}^{2}}}&0\\
+A_{31}/L_{11}&\left(A_{32}-L_{31}L_{21}\right)/L_{22}&{\sqrt {A_{33}-L_{31}^{2}-L_{32}^{2}}}\end{pmatrix}}\end{aligned}}} 
+$$
 
 and therefore the following formulas for the entries of L:
 
-<img src="imgs/CodeCogsEqn9.png" alt="formula" width="40%" />
+$$ 
+{\displaystyle L_{j,j}=(\pm ){\sqrt {A_{j,j}-\sum_{k=1}^{j-1}L^{2}_{j,k}}},} 
+$$
 
-<img src="imgs/CodeCogsEqn10.png" alt="formula" width="60%" />
+$$ 
+{\displaystyle L_{i,j}={\frac {1}{L_{j,j}}}\left(A_{i,j}-\sum_{k=1}^{j-1}L_{i,k}L_{j,k}\right)\quad {\text{for }}i>j.} 
+$$
+
 
 For complex and real matrices, inconsequential arbitrary sign changes of diagonal and associated off-diagonal elements are allowed. The expression under the **square root** is always positive if A is real and positive-definite.
 
 For complex Hermitian matrix, the following formula applies:
 
-<img src="imgs/CodeCogsEqn11.png" alt="formula" width="40%" />
+$$ 
+{\displaystyle L_{j,j}={\sqrt {A_{j,j}-\sum_{k=1}^{j-1}L_{j,k}L_{j,k}^{*}}},} 
+$$
 
-<img src="imgs/CodeCogsEqn12.png" alt="formula" width="60%" />
+$$ 
+{\displaystyle L_{i,j}={\frac {1}{L_{j,j}}}\left(A_{i,j}-\sum_{k=1}^{j-1}L_{i,k}L_{j,k}^{*}\right)\quad {\text{for }}i>j.} 
+$$
+
 
 So we can compute the (i, j) entry if we know the entries to the left and above. The computation is usually arranged in either of the following orders: 
 
@@ -211,11 +261,56 @@ The execution times are expressed in **milliseconds (ms)**.
 <hr>
 
 ## **Execution Guide**
-todo
+
+**Script help page:**
+
+```
+python main.py --help
+
+usage: main.py [-h] [-tm {simple,find_limit,benchmark}] [-m {row,column,diagonal}] [--jit] [--seed SEED] [--size SIZE] [-alg {cholesky,gauss}] [-v]
+
+options:
+  -h, --help            show this help message and exit
+  -tm {simple,find_limit,benchmark}, --test_mode {simple,find_limit,benchmark}
+                        Start the selected test mode.
+                                simple:     generate data, compute factorization/decomposition and resolve the Linear System.
+                                find_limit: compute different Cholesky Factorization over bigger matrix (size * 2) every time, starting from a 100x100.
+                                benchmark:  generate data and only compute the factorization/decomposition. 
+                                            This returns the execution time and saves results in a file
+                        
+                                
+  -m {row,column,diagonal}, --method {row,column,diagonal}
+                        Select which Cholesky implementation to use.
+  --jit                 Enable JIT to enhance the performance.
+  --seed SEED           Set the seed for the Random Number Generation.
+  --size SIZE           Set the matrix size (if possible).
+  -alg {cholesky,gauss}, --algorithm {cholesky,gauss}
+                        Choose the algorithm to use.
+  -v, --verbose         Enable verbose mode.
+```
+
+**Run a simple test:**
+
+The following line starts a simple test using a matrix `200x200`, with a seed of `20`
+using the Cholesky Factorization with the diagonal method/implementation.
+
+```
+python main.py -tm simple -alg cholesky -m diagonal --seed 20 --size 200
+```
 
 
+The following line starts the same test of the previous one with the Gaussian Decomposition algorithm.
+```
+python main.py -tm simple -alg gauss --seed 20 --size 200
+```
 
+**Run a benchmark with JIT 🚀**
 
+This line runs the Cholesky Factorization algorithm with the row method/implementation, over a `10000x10000` matrix, with seed `20`, using `JIT` compiling.
+
+```
+python main.py -tm benchmark --jit -alg cholesky -m row --seed 20 --size 10000
+```
 <hr>
 
 

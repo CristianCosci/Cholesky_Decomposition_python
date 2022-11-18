@@ -37,7 +37,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(
         "-tm",
@@ -45,7 +45,14 @@ if __name__ == "__main__":
         type=str,
         choices=["simple", "find_limit", "benchmark"],
         default="simple",
-        help="Avvia una tra le varie procedure di testing."
+        help=
+        """Start the selected test mode.
+        simple:     generate data, compute factorization/decomposition and resolve the Linear System.
+        find_limit: compute different Cholesky Factorization over bigger matrix (size * 2) every time, starting from a 100x100.
+        benchmark:  generate data and only compute the factorization/decomposition. 
+                    This returns the execution time and saves results in a file
+
+        """
     )
 
     parser.add_argument(
@@ -54,27 +61,27 @@ if __name__ == "__main__":
         type=str,
         choices=["row", "column", "diagonal"],
         default="column",
-        help="Indica l'implementazione di Cholesky da utilizzare."
+        help="Select which Cholesky implementation to use."
     )
 
     parser.add_argument(
         "--jit", 
         action="store_true",
-        help="Utilizza la JIT Compile per migliorare le performance."
+        help="Enable JIT to enhance the performance."
     )
 
     parser.add_argument(
         "--seed", 
         type=int,
         default=20,
-        help="Specifica il seed per la ripetibilità dei test."
+        help="Set the seed for the Random Number Generation."
     )
 
     parser.add_argument(
         "--size", 
         type=int,
         default=10_000,
-        help="Specifica la dimensione della matrice (se possibile)."
+        help="Set the matrix size (if possible)."
     )
 
     parser.add_argument(
@@ -83,14 +90,14 @@ if __name__ == "__main__":
         type=str,
         choices=["cholesky", "gauss"],
         default="cholesky",
-        help="Indica quale tra i possibili algoritmi utilizzare."
+        help="Choose the algorithm to use."
     )
 
     parser.add_argument(
         "-v",
         "--verbose", 
         action="store_true",
-        help="Abilita la modalità verbose mostrano molte più informazioni."
+        help="Enable verbose mode."
     )
 
     args = parser.parse_args()
