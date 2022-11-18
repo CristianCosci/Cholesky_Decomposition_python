@@ -261,11 +261,56 @@ The execution times are expressed in **milliseconds (ms)**.
 <hr>
 
 ## **Execution Guide**
-todo
+
+**Script help page:**
+
+```
+python main.py --help
+
+usage: main.py [-h] [-tm {simple,find_limit,benchmark}] [-m {row,column,diagonal}] [--jit] [--seed SEED] [--size SIZE] [-alg {cholesky,gauss}] [-v]
+
+options:
+  -h, --help            show this help message and exit
+  -tm {simple,find_limit,benchmark}, --test_mode {simple,find_limit,benchmark}
+                        Start the selected test mode.
+                                simple:     generate data, compute factorization/decomposition and resolve the Linear System.
+                                find_limit: compute different Cholesky Factorization over bigger matrix (size * 2) every time, starting from a 100x100.
+                                benchmark:  generate data and only compute the factorization/decomposition. 
+                                            This returns the execution time and saves results in a file
+                        
+                                
+  -m {row,column,diagonal}, --method {row,column,diagonal}
+                        Select which Cholesky implementation to use.
+  --jit                 Enable JIT to enhance the performance.
+  --seed SEED           Set the seed for the Random Number Generation.
+  --size SIZE           Set the matrix size (if possible).
+  -alg {cholesky,gauss}, --algorithm {cholesky,gauss}
+                        Choose the algorithm to use.
+  -v, --verbose         Enable verbose mode.
+```
+
+**Run a simple test:**
+
+The following line starts a simple test using a matrix `200x200`, with a seed of `20`
+using the Cholesky Factorization with the diagonal method/implementation.
+
+```
+python main.py -tm simple -alg cholesky -m diagonal --seed 20 --size 200
+```
 
 
+The following line starts the same test of the previous one with the Gaussian Decomposition algorithm.
+```
+python main.py -tm simple -alg gauss --seed 20 --size 200
+```
 
+**Run a benchmark with JIT 🚀**
 
+This line runs the Cholesky Factorization algorithm with the row method/implementation, over a `10000x10000` matrix, with seed `20`, using `JIT` compiling.
+
+```
+python main.py -tm benchmark --jit -alg cholesky -m row --seed 20 --size 10000
+```
 <hr>
 
 
