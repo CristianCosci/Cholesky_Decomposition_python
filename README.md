@@ -1,24 +1,17 @@
 # **Cholesky Factorization**
 
 ## **Index**
-- [**Cholesky Factorization**](#cholesky-factorization)
-  - [**Index**](#index)
-  - [**Introduction**](#introduction)
-  - [**Positive semidefinite matrices**](#positive-semidefinite-matrices)
-- [**The Cholesky algorithm**](#the-cholesky-algorithm)
-  - [**The Cholesky–Banachiewicz and Cholesky–Crout algorithms**](#the-choleskybanachiewicz-and-choleskycrout-algorithms)
-  - [**The Diagonal by Diagonal Computation Algorithm**](#the-diagonal-by-diagonal-computation-algorithm)
-  - [**Implementation Info and comparison with other methods**](#implementation-info-and-comparison-with-other-methods)
-    - [**Directory content explaination**](#directory-content-explaination)
-  - [**Results**](#results)
-    - [**Cholesky Factorization (no JIT)**](#cholesky-factorization-no-jit)
-    - [**Cholesky Factorization (JIT)**](#cholesky-factorization-jit)
-    - [**Gussian Elimination**](#gussian-elimination)
-    - [**Cholesky (no JIT) vs Cholesky (JIT)**](#cholesky-no-jit-vs-cholesky-jit)
-    - [**Cholesky Factorization VS Gaussian Elimination**](#cholesky-factorization-vs-gaussian-elimination)
-  - [**Installation and virtual environment preparation**](#installation-and-virtual-environment-preparation)
-  - [**Execution Guide**](#execution-guide)
-      - [**References**](#references)
+
+1. [**Introduction**](#introduction)
+   - [**Positive semidefinite matrices**](#positive-semidefinite-matrices)
+2. [**The Cholesky algorithm**](#the-cholesky-algorithm)
+   - [**The Cholesky–Banachiewicz and Cholesky–Crout algorithms**](#the-choleskybanachiewicz-and-choleskycrout-algorithms)
+   - [**The Diagonal by Diagonal Computation Algorithm**](#the-diagonal-by-diagonal-computation-algorithm)
+3. [**Implementation Info and comparison with other methods**](#implementation-info-and-comparison-with-other-methods)
+4. [**Results**](#results)
+5. [**Installation and virtual environment preparation**](#installation-and-virtual-environment-preparation)
+6. [**Execution Guide**](#execution-guide)
+7. [**References**](#references)
 
 
 <hr>
