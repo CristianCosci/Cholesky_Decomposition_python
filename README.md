@@ -320,3 +320,11 @@ python main.py -tm benchmark --jit -alg cholesky -m row --seed 20 --size 10000
 
 ### **References**
 - <https://en.wikipedia.org/wiki/Cholesky_decomposition>
+
+<hr>
+
+#### ***Authors***
+
+| ![cosci](https://avatars.githubusercontent.com/u/44636000?s=421&v=4) | ![vescera](https://avatars.githubusercontent.com/u/10250769?s=421&v=4)| ![fagiolo](https://avatars.githubusercontent.com/u/44865237?v=4)
+| - | - | - |
+| [Cristian Cosci](https://github.com/CristianCosci) :chicken: | [Nicolò Vescera](https://github.com/ncvescera) 🦧 | [Fabrizio Fagiolo](https://github.com/F-a-b-r-i-z-i-o) :bug:
