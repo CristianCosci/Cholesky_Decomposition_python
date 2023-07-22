@@ -58,22 +58,22 @@ $A(1) := A$.
 
 At step i, the matrix $A^{(i)}$ has the following form:
 
-$$
+```math
 \mathbf {A} ^{(i)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\ 
 0 &a_{i,i}&\mathbf {b}_{i}^{*}\\ 
 0&\mathbf {b} _{i}&\mathbf {B} ^{(i)}
 \end{pmatrix}}, 
-$$
+```
 
 where $I_{i−1}$ denotes the identity matrix of dimension i − 1.
 
 If we now define the matrix $L_i$ by
 
-$$
+```math
 \mathbf {L}_{i}:={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\
 0&{\sqrt {a_{i,i}}}&0\\
 0&{\frac {1}{\sqrt {a_{i,i}}}}\mathbf {b} _{i}&\mathbf {I} _{n-i}\end{pmatrix}}, 
-$$
+```
 
 
 (note that $a_{i,i}$ > 0 since $A^{(i)}$ is positive definite), then we can write $A^{(i)}$  as
@@ -85,10 +85,11 @@ $$
 
 where
 
-$$ \mathbf {A} ^{(i+1)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\
+```math
+\mathbf {A} ^{(i+1)}={\begin{pmatrix}\mathbf {I}_{i-1}&0&0\\
 0&1&0\\
 0&0&\mathbf {B} ^{(i)}-{\frac {1}{a_{i,i}}}\mathbf {b} _{i}\mathbf {b} _{i}^{*}\end{pmatrix}}. 
-$$
+```
 
 
 Note that $b_i$ $b^*_i$ is an outer product, therefore this algorithm is called the outer-product version in (Golub & Van Loan).
